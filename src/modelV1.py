@@ -1,23 +1,28 @@
 from tensorflow.keras.preprocessing.image import ImageDataGenerator 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense, BatchNormalization
 from sklearn.metrics import roc_curve, auc
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 from sklearn.metrics import plot_confusion_matrix
 
+
+
 def data_generator():
     '''
     Returns augmented, labeled data
     '''
     train_datagen = ImageDataGenerator(
-        rescale= 1./255, 
+        rescale= 1./255,
+        zoom_range= 0.1,
+        height_shift_range= 0.1,
+        width_shift_range=0.1,
+        rotation_range=20,
         validation_split = 0.2,
-        vertical_flip = True,
-        horizontal_shift_range = 0.1,
-        shear_range = 0.2 
+        horizontal_flip = True,
+        shear_range = 0.1 
         )
     valid_datagen = ImageDataGenerator(rescale= 1./255)
     test_datagen = ImageDataGenerator(rescale= 1./255)
@@ -42,23 +47,32 @@ def cnn_model():
         input_shape = (model_params['img_width'], model_params['img_height'], 3)
     
     model = Sequential()
-    for i, num_filters in enumerate(model_params['filters']):
-        if i == 0:
-            model.add(Conv2D(num_filters, (3,3), input_shape= input_shape))
-        else:
-            model.add(Conv2D(num_filters, (3,3)))
-        model.add(Activation('relu'))
+    model.add(Conv2D(64, (3,3), input_shape=input_shape))
+    model.add(Activation('relu')) 
+    model.add(BatchNormalization())   
     model.add(MaxPooling2D(pool_size= (2,2))) 
-
-    model.add(Flatten())
-    model.add(Dense(29)) 
+    # for i, num_filters in enumerate(model_params['filters']):
+    #     if i == 0:
+    #         model.add(Conv2D(num_filters, (3,3), input_shape= input_shape))
+    #     else:
+    #         model.add(Conv2D(num_filters, (3,3), activation='relu'))
+        # model.add(MaxPooling2D(pool_size=(2,2)))
+        # model.add(Dropout(0.2))
+    model.add(Conv2D(128, (3,3)))
     model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(26))
+    model.add(BatchNormalization())    
+    model.add(MaxPooling2D(pool_size= (2,2)))
+    model.add(Flatten())
+    model.add(BatchNormalization())
+    model.add(Dense(250)) 
+    model.add(Activation('relu'))
+    # model.add(Dropout(0.4)) 
+    model.add(BatchNormalization())
+    model.add(Dense(27))
     model.add(Activation('softmax'))
     model.compile(
         loss='categorical_crossentropy',
-        optimizer = Adam(),
+        optimizer = Adam(learning_rate = 0.01),
         metrics=['accuracy']
     )
 
@@ -91,9 +105,9 @@ if __name__=='__main__':
         'test_dir': '../data/Test',
         'filters': [16, 32, 64],
         'batch_size': 50,
-        'img_height': 200 ,
-        'img_width': 200 ,
-        'epochs': 100 
+        'img_height': 28, 
+        'img_width': 28,
+        'epochs': 40 
     }
 
     tensorboard_callback = TensorBoard(
@@ -117,12 +131,11 @@ if __name__=='__main__':
         steps_per_epoch = 3,
         epochs = model_params['epochs'],
         validation_data = valid_gen,
-        validation_steps = 1,
-        callbacks= [tensor_checkpoint]
+        validation_steps = 1, 
+        callbacks= [tensorboard_callback, tensor_checkpoint]
     )
 
-    model.evaluate(valid_gen)
-    print()
+    # model.evaluate(valid_gen)
     model_evaluation_plot()
     model.save_weights('v1.h5')
 
