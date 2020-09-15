@@ -5,6 +5,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, F
 from sklearn.metrics import roc_curve, auc
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
+from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 
 def data_generator():
     '''
@@ -17,7 +18,8 @@ def data_generator():
     train_gen = train_datagen.flow_from_directory(model_params['train_dir'], target_size= (model_params['img_width'], model_params['img_height']))
     valid_gen = valid_datagen.flow_from_directory(
         model_params['valid_dir'],
-        shuffle = True # change to False if using roc_plot
+        target_size= (model_params['img_width'], model_params['img_height']), 
+        shuffle = False # change to False if using roc_plot
     )
     test_gen = test_datagen.flow_from_directory(model_params['test_dir'])
     
@@ -45,7 +47,7 @@ def cnn_model():
     model.add(Dense(29)) 
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(29))
+    model.add(Dense(3))
     model.add(Activation('softmax'))
     model.compile(
         loss='categorical_crossentropy',
@@ -108,6 +110,19 @@ if __name__=='__main__':
         'epochs': 50 
     }
 
+    tensorboard_callback = TensorBoard(
+        log_dir="../data/logs", 
+        histogram_freq=0, 
+        write_graph=True, 
+        write_images=False,
+        update_freq= 'epoch',
+        profile_batch= 2,
+        embeddings_freq= 0,
+        embeddings_metadata= None
+        )
+    
+    tensor_checkpoint = ModelCheckpoint('../data/models', save_best_only= True)
+
     model = cnn_model()
 
     train_datagen, valid_datagen, test_datagen, train_gen, valid_gen, test_gen = data_generator()
@@ -118,13 +133,14 @@ if __name__=='__main__':
         train_gen,
         steps_per_epoch = 3,
         epochs = model_params['epochs'],
-        # validation_data = valid_gen,
-        validation_steps = 1
+        validation_data = valid_gen,
+        validation_steps = 1,
+        callbacks= [tensor_checkpoint]
     )
 
-    # model.evaluate(valid_gen)
+    model.evaluate(valid_gen)
 
-    # roc_plot() # change validation shuffle to False if using roc_plot
+    roc_plot() # change validation shuffle to False if using roc_plot
 
     model_evaluation_plot()
 
