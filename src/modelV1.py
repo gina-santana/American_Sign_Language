@@ -48,8 +48,8 @@ def data_generator():
         )
     valid_datagen = ImageDataGenerator(rescale= 1./255)
 
-    train_gen = train_datagen.flow_from_directory(model_params['train_dir'], target_size= (model_params['img_width'], model_params['img_height']), batch_size= model_params['batch_size']) #, shuffle=True)
-    valid_gen = valid_datagen.flow_from_directory(model_params['valid_dir'], target_size= (model_params['img_width'], model_params['img_height']), batch_size=model_params['batch_size'])
+    train_gen = train_datagen.flow_from_directory(model_params['train_dir'], target_size= (model_params['img_width'], model_params['img_height']), batch_size= model_params['batch_size'], shuffle=True)
+    valid_gen = valid_datagen.flow_from_directory(model_params['valid_dir'], target_size= (model_params['img_width'], model_params['img_height']), batch_size=model_params['batch_size'], shuffle=True)
     
     return train_datagen, valid_datagen, train_gen, valid_gen
 
@@ -64,33 +64,21 @@ def cnn_model():
     
     model = Sequential()
 
-    # model.add(Conv2D(128, (3,3), input_shape=input_shape))
-    # model.add(Activation('relu')) 
-    # model.add(MaxPooling2D(pool_size= (2,2))) 
-    # model.add(Dropout(0.2)) 
-
-    # model.add(Conv2D(64, (3,3)))
-    # model.add(Activation('relu')) 
-    # model.add(MaxPooling2D(pool_size= (2,2))) 
-    # model.add(Dropout(0.25)) 
-
     model.add(Conv2D(64, (3,3), input_shape=input_shape))
     model.add(Activation('relu')) 
     model.add(MaxPooling2D(pool_size= (2,2))) 
-    model.add(Dropout(0.25)) 
 
     model.add(Conv2D(16, (3,3)))
     model.add(Activation('relu'))
-    model.add(BatchNormalization())    
+    # model.add(BatchNormalization())    
     model.add(MaxPooling2D(pool_size= (2,2)))
-    model.add(Dropout(0.3)) 
 
     model.add(Flatten())
     model.add(BatchNormalization())
     model.add(Dense(80)) # consider this number - lower potentially # was 250
     model.add(Activation('relu'))
     model.add(Dropout(0.5)) 
-    model.add(BatchNormalization())
+    # model.add(BatchNormalization())
     model.add(Dense(28))
     model.add(Activation('softmax'))
     model.compile(
@@ -120,7 +108,7 @@ def confusion_matrix_plot():
     Returns confusion matrix of model's performance
     '''
     pred_raw = model.predict(valid_gen)
-    pred = np.argmax(pred_raw)
+    pred = np.argmax(pred_raw, axis=1)
     print('Confusion Matrix')
     print(confusion_matrix(valid_gen.classes, pred))
     print('Classification Report')
@@ -133,10 +121,10 @@ if __name__=='__main__':
         'train_dir': '../data/Train',
         'valid_dir': '../data/Valid',
         'test_dir': '../data/Test',
-        'batch_size': 40, # was 50
+        'batch_size': 50, # was 50
         'img_height': 100, 
         'img_width': 100,
-        'epochs': 15 
+        'epochs': 30 
     }
     # print(img_to_array())
     search_and_destroy()
@@ -161,7 +149,7 @@ if __name__=='__main__':
 
     history = model.fit(
         train_gen,
-        steps_per_epoch = 58828 // model_params['batch_size'], # updates weight/backprop, can increase (more updates per epoch)
+        steps_per_epoch = 100, # 58828 // model_params['batch_size'], # updates weight/backprop, can increase (more updates per epoch)
         epochs = model_params['epochs'],
         validation_data = valid_gen,
         validation_steps = 1,
@@ -171,5 +159,10 @@ if __name__=='__main__':
 
     # model.evaluate(valid_gen)
     model_evaluation_plot()
-    # confusion_matrix_plot()
-    model.save_weights('v1.h5')
+    confusion_matrix_plot()
+    model.save_weights('v2.h5')
+
+    # V1 - prior to land
+    # V2 - after Land; took out dropout, simplified model; added shuffle=true for both valid and train; 
+
+
