@@ -91,7 +91,7 @@ if __name__=='__main__':
 
     history = model.fit(
         train_gen,
-        steps_per_epoch = 58828 // 50,
+        steps_per_epoch = 20,
         epochs = 30,
         validation_data = valid_gen,
         validation_steps = 1,
@@ -100,7 +100,7 @@ if __name__=='__main__':
     
     model_evaluation_plot()
 
-    model.save_weights('transfer.h5')
+    model.save_weights('transfer2.h5')
     
     
 

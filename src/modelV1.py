@@ -136,7 +136,7 @@ if __name__=='__main__':
         'batch_size': 40, # was 50
         'img_height': 100, 
         'img_width': 100,
-        'epochs': 15 
+        'epochs': 50 
     }
     # print(img_to_array())
     search_and_destroy()
