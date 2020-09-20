@@ -17,14 +17,14 @@ model_params = {
 search_and_destroy()
 model = CNNModel(**model_params)
 model.fit()
-model.load_weights_from_file('../model_weights/v1rerun.h5')
-layers = model.trained_model.layers
+# model.load_weights_from_file('../model_weights/v1rerun.h5')
+# layers = model.trained_model.layers
 
 evaluated_validation = model.evaluate_model(model.create_generator(model.valid_dir, shuffle=False))
 model.print_classification_report(evaluated_validation)
 model.plot_confusion_matrix(**evaluated_validation)
 
-plot_model(model.trained_model, to_file='../images/V1structure.png')
+plot_model(model.trained_model, to_file='../images/V1structure.png', show_shapes=True, show_layer_names=True)
 
 # model.save_weights('v1rerun.h5') #sobel_y
 # model.save_weights('v1rerun2.h5') # sobel_x
