@@ -1,6 +1,6 @@
 # A Helping Hand: American Sign Language Interpretor
 
-<img src="images/ASL.png" width="700" height="317" >
+<img src="images/banner.png" width="700" height="317" >
 
 # Table of Contents
 
