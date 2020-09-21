@@ -42,12 +42,12 @@ I iterated through 3 versions of my baseline model:
 Each model was trained twice: once on sobel y-axis filtering and once on sobel x-axis filtering.
 For information about each model's precision and recall please visit the following:
 
-* [Model 1: y](images/Model_1_y)
-* [Model 1: x](images/Model_1_x)
-* [Model 2: y](images/Model_2_y)
-* [Model 2: x](images/Model_2_x)
-* [Model 3: y](images/Model_3_y)
-* [Model 4: x](images/Model_3_x)
+* [Model 1: y](images/Model_1_y.png)
+* [Model 1: x](images/Model_1_x.png)
+* [Model 2: y](images/Model_2_y.png)
+* [Model 2: x](images/Model_2_x.png)
+* [Model 3: y](images/Model_3_y.png)
+* [Model 4: x](images/Model_3_x.png)
 
 
 ### Model 1
