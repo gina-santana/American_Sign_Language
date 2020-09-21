@@ -40,6 +40,15 @@ I iterated through 3 versions of my baseline model:
 * Model version 3 had a "complex" CNN architecture model
 
 Each model was trained twice: once on sobel y-axis filtering and once on sobel x-axis filtering.
+For information about each model's precision and recall please visit the following:
+
+* [Model 1: y](images/Model_1_y)
+* [Model 1: x](images/Model_1_x)
+* [Model 2: y](images/Model_2_y)
+* [Model 2: x](images/Model_2_x)
+* [Model 3: y](images/Model_3_y)
+* [Model 4: x](images/Model_3_x)
+
 
 ### Model 1
 
@@ -103,7 +112,7 @@ Version 2 of the model used transfer learning. The pre-trained CNN model used fo
 
 ### Model 3:
 
-Due to the undesirable results from model version 2, I built a new model from scratch without transfer learning. This 3rd and final version had more layer and more trainable parameters compared to version 1. This model only had layers for convolution, drop out which I kept at a consistent 0.5, and 2 dense layers. The total number of parameters equated to 3,230,108 of which all were trainable.
+Due to the undesirable results from model version 2, I built a new model from scratch without transfer learning. This 3rd and final version had more layer and more trainable parameters compared to version 1. This model only had layers for convolution, drop out which I kept at a consistent 0.5, and 2 dense layers. The total number of parameters equated to 3,230,108 of which all were trainable. 
 
 #### Sobel y:
 
