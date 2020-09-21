@@ -1,4 +1,4 @@
-# A Helping Hand: American Sign Language Interpretor
+# A Helping Hand: An AI American Sign Language Interpreter
 
 <img src="images/banner.png" width="900" height="500">
 
@@ -56,29 +56,15 @@ This model had 2 main layers that started with convolution. I included additiona
 
 #### Sobel y:
 
-* Accuracy: 93.8%
+* Accuracy: [93.8%](images/model1final.png)
 * loss: 21.89%
-
-###### Figure 3:
-
-<img src="images/model1final.png" width="571" height="457">
-
-###### Figure 4:
-
-<img src="images/cm_modelV1_nonnorm.png" width="816" height="699">
+* [Confusion Matrix](images/cm_modelV1_nonnorm.png)
 
 #### Sobel x:
 
-* Accuracy: 97.44%
+* Accuracy: [97.44%](images/model1rerun2.png)
 * loss: 12.66%
-
-###### Figure 5:
-
-<img src="images/model1rerun2.png" width="571" height="457" >
-
-###### Figure 6:
-
-<img src="images/cm_modelv1rerun2.png" width="816" height="699">
+* [Confusion Matrix](images/cm_modelv1rerun2.png)
 
 ### Model 2
 
@@ -86,29 +72,15 @@ Version 2 of the model used transfer learning. The pre-trained CNN model used fo
 
 #### Sobel y:
 
-* Accuracy: 90.64%
+* Accuracy: [90.64%](images/TransferFinal.png)
 * Loss: 31.74% 
-
-###### Figure 7:
-
-<img src="images/TransferFinal.png" width="571" height="457">
-
-###### Figure 8:
-
-<img src="images/cm_transfermodel_nonnorm.png" width="816" height="699">
+* [Confusion Matrix](images/cm_transfermodel_nonnorm.png)
 
 #### Sobel x:
 
-* Accuracy: 90.73%
+* Accuracy: [90.73%](images/transferrerun.png)
 * Loss: 43.45%
-
-###### Figure 9:
-
-<img src="images/transferrerun.png" width="571" height="457">
-
-###### Figure 10:
-
-<img src="images/transferrerun_cm.png" width="816" height="699">
+* [Confusion Matrix](images/transferrerun_cm.png)
 
 ### Model 3:
 
@@ -116,29 +88,15 @@ Due to the undesirable results from model version 2, I built a new model from sc
 
 #### Sobel y:
 
-* Accuracy: 95.96%
+* Accuracy: [95.96%](images/ModelV3Final.png)
 * Loss: 12.10%
-
-###### Figure 11:
-
-<img src= "images/ModelV3Final.png" width="571" height="457">
-
-###### Figure 12:
-
-<img src="images/cm_modelv3_nonnorm.png" width="816" height="699">
+* [Confusion Matrix](images/cm_modelv3_nonnorm.png)
 
 #### Sobel x:
 
-* Accuracy: 97.21%
+* Accuracy: [97.21%](images/modelv3rerun.png)
 * Loss: 8.35%
-
-###### Figure 13:
-
-<img src="images/modelv3rerun.png" width="571" height="457">
-
-###### Figure 14:
-
-<img src="images/cm_modelv3rerun.png" width="816" height="699">
+* [Confusion Matrix](images/cm_modelv3rerun.png)
 
 The following chart is a summary of each model's performance including accuracy, loss, number of parameters, and the most confused for classes:
 
